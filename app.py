@@ -1,5 +1,4 @@
 import streamlit as st
-from dotenv import load_dotenv
 
 from collectors.registry import get_collector
 from core.charts import build_chart
@@ -7,7 +6,6 @@ from core.errors import DataError
 from core.parser import parse_query
 from core.table import to_display_table
 
-load_dotenv()  # 로컬 개발용(.env). 배포 환경에서는 Streamlit Secrets 사용
 DOMAIN_NAMES = {"weather": "날씨", "population": "인구·사회통계", "health": "질병·보건"}
 
 st.set_page_config(page_title="공공데이터 통합 검색", layout="wide")
