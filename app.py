@@ -172,7 +172,7 @@ st.caption("Gemini API로 수집한 시간별 기온·습도·강수량을 Plotl
 with st.sidebar:
     st.header("설정")
     api_key = get_api_key() or st.text_input("Gemini API Key", type="password")
-    model = st.text_input("모델", value="gemini-2.5-flash")
+    model = st.text_input("모델", value="gemini-3.1-flash-lite")
     region = st.text_input("지역", value="서울 강남")
     target_date = st.date_input("날짜", value=date(2022, 8, 20))
     run = st.button("데이터 수집 및 시각화", type="primary", use_container_width=True)
