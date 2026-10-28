@@ -2,12 +2,12 @@
   - 서비스 페이지: https://www.data.go.kr/data/15059093/openapi.do
   - 원본 자료 포털: 기상자료개방포털 https://data.kma.go.kr
 """
-import os
 from datetime import date, timedelta
 
 import pandas as pd
 import requests
 
+from core.config import get_secret
 from core.errors import DataError
 from core.models import ParsedQuery, CollectResult, SourceInfo
 from core.parser import REGIONS
@@ -31,7 +31,7 @@ class KMACollector(BaseCollector):
     domain = "weather"
 
     def __init__(self, api_key=None, session=None):
-        self.api_key = api_key or os.getenv("KMA_API_KEY", "")
+        self.api_key = api_key or get_secret("KMA_API_KEY")
         self.session = session or requests.Session()
 
     def _fetch_page(self, stn, start, end, page):
@@ -54,7 +54,7 @@ class KMACollector(BaseCollector):
 
     def collect(self, query: ParsedQuery) -> CollectResult:
         if not self.api_key:
-            raise DataError("기상청 API 키가 없습니다. .env 파일에 KMA_API_KEY를 설정해주세요.")
+            raise DataError("기상청 API 키가 없습니다. 설정(Secrets 또는 .env)에 KMA_API_KEY를 등록해주세요.")
         stn = REGIONS.get(query.region or "")
         if not stn:
             raise DataError("지원하는 지역을 찾지 못했습니다. 예: 서울, 부산, 대전, 제주 등")
